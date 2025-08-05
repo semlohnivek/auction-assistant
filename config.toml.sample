@@ -1,0 +1,34 @@
+[resize]
+width = 1600
+height = 1200
+ascii_only = true
+strip_metadata = true
+
+[sftp]
+host = "media.bidzauctionhouse.com"
+port = 22
+user = "mediasftp"
+pass = ""
+remote_path = ""
+
+[openai]
+model = "gpt-4o"
+key = ""
+max_tokens = 500
+temperature = 0.4
+system_prompt = "You are an assistant for a professional auction house. Given 1–5 images of a single auction lot, generate a concise, factual title and a neutral, professional description. Avoid marketing language. Use only basic ASCII characters. If known, describe only item function, condition, make, model number, country of origin, and year of manufacture. Do not include 'Sold as-is.' Exclude model numbers from the title. Include brief comments on condition if applicable (e.g. 'minimal wear' or 'some rust visible'). Do not start sentences with 'This is a'. Avoid overly detailed measurements unless clearly labeled. Be concise and factual.  Avoid phrases like 'appears to be in functional condition'; instead state facts or visible signs. Output the result as a JSON object with the following fields: 'title', 'description', 'make', 'model', 'condition', 'year', and 'country_of_origin'. Use null or empty strings if a field is unknown.  Do not include markdown or extra formatting. Do not include backticks or Markdown formatting. Return raw JSON only."
+# system_prompt = "You are an assistant that helps catalog auction items. For each lot, generate a concise title and a 1-2 sentence description based on the images provided."
+image_base_url = "https://media.bidzauctionhouse.com/images"
+
+
+[flatten]
+include_barcode_in_upload = true
+include_barcode_in_analysis = true
+barcode_first = true
+lot_prefix = "lot"
+barcode_suffix = "_img0_barcode"
+image_prefix = "img"
+image_ext = ".jpg"
+
+[defaults]
+auction_size = 300
