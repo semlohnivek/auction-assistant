@@ -10,10 +10,7 @@ import (
 
 type Config struct {
 	Resize struct {
-		Width     int  `toml:"width"`
-		Height    int  `toml:"height"`
-		ASCIIOnly bool `toml:"ascii_only"`
-		StripMeta bool `toml:"strip_metadata"`
+		MaxDimension int `toml:"max_dimension"`
 	} `toml:"resize"`
 
 	SFTP struct {

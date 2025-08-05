@@ -1,8 +1,5 @@
 [resize]
-width = 1600
-height = 1200
-ascii_only = true
-strip_metadata = true
+max_dimension=1200
 
 [sftp]
 host = "media.bidzauctionhouse.com"

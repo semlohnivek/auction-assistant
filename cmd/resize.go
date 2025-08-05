@@ -2,13 +2,14 @@ package cmd
 
 import (
 	"fmt"
-	"image/jpeg"
 	"os"
 	"path/filepath"
 	"strings"
 
 	"github.com/disintegration/imaging"
 	"github.com/spf13/cobra"
+
+	"bidzauction/config"
 )
 
 var resizeCmd = &cobra.Command{
@@ -64,30 +65,21 @@ func resizeAndSave(inputPath, outputPath string) error {
 	}
 
 	for scale := 1.0; scale >= 0.3; scale -= 0.1 {
-		w := int(float64(src.Bounds().Dx()) * scale)
-		h := int(float64(src.Bounds().Dy()) * scale)
-		dst := imaging.Resize(src, w, h, imaging.Lanczos)
+		w := src.Bounds().Dx()
+		h := src.Bounds().Dy()
 
-		tempFile := outputPath + ".tmp"
-		out, err := os.Create(tempFile)
-		if err != nil {
-			return err
-		}
-		err = jpeg.Encode(out, dst, &jpeg.Options{Quality: 75})
-		out.Close()
-		if err != nil {
-			return err
+		resizedW := 0
+		resizedH := config.Current.Resize.MaxDimension
+
+		if w > h {
+			resizedW = 1200
+			resizedH = 0
 		}
 
-		info, err := os.Stat(tempFile)
-		if err != nil {
-			return err
-		}
-		if info.Size() <= 300_000 {
-			return os.Rename(tempFile, outputPath)
-		}
+		dst := imaging.Resize(src, resizedW, resizedH, imaging.Box)
 
-		os.Remove(tempFile)
+		return imaging.Save(dst, outputPath, imaging.JPEGQuality(80))
+
 	}
 
 	return fmt.Errorf("unable to reduce %s below target size", inputPath)
